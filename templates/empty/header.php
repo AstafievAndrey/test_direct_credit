@@ -14,7 +14,7 @@
     <script src="http://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.12.1.min.js"></script>
 </head>
 <body>
-<div id="panel"><?php // $APPLICATION->ShowPanel();?></div>
+<div id="panel"><?php $APPLICATION->ShowPanel();?></div>
 <?php
     $APPLICATION->IncludeComponent("fio","");
 ?>

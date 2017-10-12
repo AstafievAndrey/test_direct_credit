@@ -15,13 +15,13 @@
                     <tr ng-repeat="(key, value) in fio">
                         <td>{{value.ID}}</th>
                         <td><input ng-disabled="value.PROPERTY.DISABLED || value.PROPERTY.LOADSAVEFIO" 
-                                   ng-model="value.PROPERTY.SURNAME"
+                                   ng-model="value.PROPERTY.SURNAME" ng-pattern="regex" 
                                    class="table-input"></td>
                         <td><input ng-disabled="value.PROPERTY.DISABLED || value.PROPERTY.LOADSAVEFIO" 
-                                   ng-model="value.PROPERTY.NAME"
+                                   ng-model="value.PROPERTY.NAME" ng-pattern="regex"
                                    class="table-input"></td>
                         <td><input ng-disabled="value.PROPERTY.DISABLED || value.PROPERTY.LOADSAVEFIO" 
-                                   ng-model="value.PROPERTY.LASTNAME"
+                                   ng-model="value.PROPERTY.LASTNAME" ng-pattern="regex"
                                    class="table-input"></td>
                         <td>
                             <span ng-show="value.PROPERTY.LOADSAVEFIO"
@@ -67,10 +67,43 @@
             </select>
         </div>
     </div>
+    <div class="row">
+        <div class="col-sm-offset-3 col-sm-6">
+            <form novalidate name="addFioForm" id="addFio" class="form-horizontal">
+                <div class="form-group">
+                    <label class="col-sm-3">Фамилия</label>
+                    <div class="col-sm-9">
+                        <input ng-model="addFio.surname" 
+                               name="surname" pattern="^[А-Яа-я]+$"
+                               class="form-control" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3">Имя</label>
+                    <div class="col-sm-9">
+                        <input ng-model="addFio.name" 
+                               name="name" pattern="^[А-Яа-я]+$"
+                               class="form-control" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3">Отчество</label>
+                    <div class="col-sm-9">
+                        <input ng-model="addFio.lastname" 
+                               name="lastname" pattern="^[А-Яа-я]+$"
+                               class="form-control" required>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
 <script>
 var fioApp = angular.module('fio', ['ui.bootstrap']);
 fioApp.controller('FioListController', function FioListController($http,$scope,$timeout) {
+    
+    $scope.addFio = {surname : '', name : '', lastname : ''}
+    $scope.regex = '/^[А-Яа-я]+$/';
     
     $scope.pagination = {
         totalItems : 0,
@@ -98,6 +131,10 @@ fioApp.controller('FioListController', function FioListController($http,$scope,$
     $scope.nPageSizeChanged = function() {
         $scope.pagination.iNumPage = 1;
         $scope.pageChanged();
+    }
+    
+    $scope.addFio = function(){
+        
     }
     
     $scope.pageChanged = function() {
