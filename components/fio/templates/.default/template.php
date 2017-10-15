@@ -163,9 +163,9 @@ fioApp.controller('FioListController', function FioListController($http,$scope,$
     };
     
     $scope.check = function(value){
-        if( (value.PROPERTY.SURNAME.search(/^[Р-пр-џ]+$/) === -1) || 
-            (value.PROPERTY.FIRSTNAME.search(/^[Р-пр-џ]+$/) === -1) ||
-            (value.PROPERTY.LASTNAME.search(/^[Р-пр-џ]+$/) === -1)){
+        if( (value.PROPERTY.SURNAME === undefined || value.PROPERTY.SURNAME.search(/^[Р-пр-џ]+$/) === -1) || 
+            (value.PROPERTY.FIRSTNAME === undefined || value.PROPERTY.FIRSTNAME.search(/^[Р-пр-џ]+$/) === -1) ||
+            (value.PROPERTY.LASTNAME === undefined || value.PROPERTY.LASTNAME.search(/^[Р-пр-џ]+$/) === -1)){
             return false;
         }
         return true;
