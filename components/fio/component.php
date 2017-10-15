@@ -23,6 +23,9 @@ if(isset($_POST['ajax']) || isset($_GET['ajax'])){
         case "addFio":
             $res = addFio($request);
             break;
+        case "updateFio":
+            $res = updateFio($request);
+            break;
     }
 
     $APPLICATION->RestartBuffer();
@@ -31,6 +34,21 @@ if(isset($_POST['ajax']) || isset($_GET['ajax'])){
     die();
 }else{
     $this->IncludeComponentTemplate();
+}
+
+function updateFio($request){
+    $el = new CIBlockElement;
+    
+    $arLoadProductArray = Array(
+        "PROPERTY_VALUES"=> [
+            "SURNAME"   => trim(iconv("utf-8", "windows-1251",$request->PROPERTY->SURNAME)),
+            "FIRSTNAME" => trim(iconv("utf-8", "windows-1251",$request->PROPERTY->FIRSTNAME)),
+            "LASTNAME" => trim(iconv("utf-8", "windows-1251",$request->PROPERTY->LASTNAME))
+        ],
+    );
+    $res = $el->Update((int)$request->ID, $arLoadProductArray);
+    
+    return $res;
 }
 
 function addFio($request){

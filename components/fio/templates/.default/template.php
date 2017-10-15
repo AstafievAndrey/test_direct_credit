@@ -41,7 +41,7 @@
                                       class="glyphicon glyphicon-ok"></span>
                             </td>
                         </tr>
-                        <tr ng-if=" (fio.length == 0) && (!loading)">
+                        <tr ng-if=" (!loading) && (fio.length == 0)">
                             <td colspan="5" align="center">
                                 Нет данных
                             </td>
@@ -138,6 +138,10 @@ fioApp.controller('FioListController', function FioListController($http,$scope,$
     $scope.clearMessage = function(){
         $scope.message = {show:false, text:""};
     }
+    $scope.setMessage = function(text){
+        $scope.message = {show:true, text:text};
+        $timeout(function(){$scope.clearMessage();},2000);
+    }
     
     $scope.sendFio = function(form){
         $http.post($scope.url+"&action=addFio",{
@@ -160,7 +164,7 @@ fioApp.controller('FioListController', function FioListController($http,$scope,$
     
     $scope.check = function(value){
         if( (value.PROPERTY.SURNAME.search(/^[А-Яа-я]+$/) === -1) || 
-            (value.PROPERTY.FIRSTNAME.search(/^[А-Яа-я]+$/) === -1)
+            (value.PROPERTY.FIRSTNAME.search(/^[А-Яа-я]+$/) === -1) ||
             (value.PROPERTY.LASTNAME.search(/^[А-Яа-я]+$/) === -1)){
             return false;
         }
@@ -173,13 +177,20 @@ fioApp.controller('FioListController', function FioListController($http,$scope,$
         }else{
             if($scope.check(value)){
                 $scope.fio[key].PROPERTY.LOADSAVEFIO = true;
-                $timeout(function(){
-                    $scope.fio[key].PROPERTY.LOADSAVEFIO = false;
-                    $scope.fio[key].PROPERTY.DISABLED = true;
-                },1000);  
+                $http.post($scope.url+"&action=updateFio",$scope.fio[key])
+                .then(function(response) {
+                    if(response.status !== 200 ){
+                        alert("Что то пошло не так");
+                    }
+                    $timeout(function(){
+                        $scope.fio[key].PROPERTY.LOADSAVEFIO = false;
+                        $scope.fio[key].PROPERTY.DISABLED = true;
+                    },1000);
+                },function(){
+                    alert("Error action editFio");
+                });  
             }else{
-                $scope.message = {show:true,text:"Проверьте правильность написания ФИО"};
-                $timeout(function(){$scope.clearMessage()},2000); 
+                $scope.setMessage("Проверьте правильность написания ФИО");
             }
         }
     }
@@ -198,6 +209,7 @@ fioApp.controller('FioListController', function FioListController($http,$scope,$
                     $scope.pagination.totalItems = response.data.totalItems;
                     $scope.fio = response.data.fio;
                     $scope.loading = false;
+                    console.log($scope.fio);
                 },500);   
             }else{
                 alert("Что то пошло не так");
