@@ -59,7 +59,7 @@
                     </tbody>
                 </table>
             </div>
-            <div class="col-xs-6 " ng-if=" (!loading) && (pagination.totalItems == 0)">
+            <div class="col-xs-6 " ng-if=" (!loading) && (pagination.totalItems !== 0)">
                 <pagination ng-model="pagination.iNumPage"
                     ng-change="pageChanged()"
                     total-items="pagination.totalItems"
@@ -70,7 +70,7 @@
                     boundary-links="true">
                 </pagination>
             </div>    
-            <div class="col-xs-6 col-sm-1 col-sm-offset-5" ng-if=" (!loading) && (pagination.totalItems == 0)">
+            <div class="col-xs-6 col-sm-1 col-sm-offset-5" ng-if=" (!loading) && (pagination.totalItems !== 0)">
                 <select ng-change="nPageSizeChanged()" ng-model="pagination.nPageSize" class="form-control" 
                         style="margin:20px 0px">
                     <option value="1">1</option>
