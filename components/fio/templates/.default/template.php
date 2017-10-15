@@ -41,7 +41,7 @@
                                       class="glyphicon glyphicon-ok"></span>
                             </td>
                         </tr>
-                        <tr ng-if=" (!loading) && (fio.length == 0)">
+                        <tr ng-if=" (!loading) && (pagination.totalItems == 0)">
                             <td colspan="5" align="center">
                                 Нет данных
                             </td>
@@ -209,7 +209,6 @@ fioApp.controller('FioListController', function FioListController($http,$scope,$
                     $scope.pagination.totalItems = response.data.totalItems;
                     $scope.fio = response.data.fio;
                     $scope.loading = false;
-                    console.log($scope.fio);
                 },500);   
             }else{
                 alert("Что то пошло не так");
